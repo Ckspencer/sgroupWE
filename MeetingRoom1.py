@@ -1,47 +1,41 @@
-print("Welcome to the meeting room booking system!")
-print(" ")
+def MainMenu():
+    print("Please select an option:")
+    print("[0] Exit Program")
+    print("[1] Add Booking")
+    print("[2] Edit Booking")
+    print("[3] Check Availbility")
+    userinput = int(input("Please select an option:"))    
 
-print("Do you want to check for any bookings? (Y/N)")
-if input()== "Y":
-        Name = input("Please enter your name: ")
-
-        if Name in open('MeetingRoom.txt').read():
-                print("You have a booking!")
-        else:
-                print("No booking was detected.")
-
-print("Do you want to make a booking? (Y/N)")
-if input()== "Y":
-        Name = input("Please enter your name: ")       
-        while True:
-            try:
-                Room = int(input("Select a room from [1-4]: "))
-                break
-            except:
-                print("That's not a valid option!")
-
-        if Room == 1:
-            print("You have Chosen room 1")
-        elif Room == 2:
-            print("")
-        elif Room == 3:
-            print("")
-        elif Room == 4:
-             print("")
-        else:
-            print('invalid Input!')
-
-        SDate = input("Input a date when the meeting will start, with the format [D/M/YEAR]: ")
-        EDate = input("Input a date when the meeting will end, with the format [D/M/YEAR]: ")
-        STime = input("Input a time when the meeting will start, with the format [Hr/min]: ")
-        ETime = input("Input a time when the meeting will start, with the format [Hr/min]: ")
-else:
+    #Check for int input
+    if (isinstance(userinput, int)):
+        pass
+        
+    #Check if int is in range
+    if (userinput <= 0 or userinput >= 3):
+        pass
+        
+    #Direct via user input
+    if (userinput == 0):
         exit()
+    elif (userinput == 1):
+        BookRoom()
+    elif (userinput == 2):
+        pass
+    else (userinput == 3):    
+        pass
 
-Booking =[Name,Room,SDate,EDate,STime,ETime]
+def BookRoom():
+    Name = input("Please enter your name: ")
+    Room = input("Select a Room [1-4]: ")
+    SDate = input("Input a date when the meeting will start, with the format of [D/M/YEAR]: ")      #Start Date is inputed from user.
+    EDate = input("Input a date when the meeting will End, with the format of [D/M/YEAR]: ")        #End Date is inputed from user.
+    STime = input("Select a time when the meeting will start, with the format of [Hr:Min]: ")       #Start Time is inputed from user.
+    ETime = input("Select a time when the metting will End,with the format of [Hr:Min]: ")          #End Time is inputed from user.
 
-with open('MeetingRoom.txt','w') as f:
- for item in Booking:
-  f.write("%s\n" % item)
+    Booking = [Name, Room, SDate, EDate, STime, ETime]
+
+#Prints out a welcome message to user.
+print("Welcome to the meeting room booking system!")          	
 print(" ")
-print("Room " + (Room) + " is now booked by " + (Name) + " on the " + (SDate) + " at " + (STime) + " until the " + (EDate) + " at " + (ETime))
+MainMenu()
+    
