@@ -1,0 +1,92 @@
+import datetime
+
+
+def MainMenu(): # BASIC SYSTEM #
+    print("Welcome to the meeting room booking system!\n")                      
+    while True: # MainMenu via while loop / User is presented with four options (1-4)
+        print("---//--/-Menu-\--\\---")
+        print("[1] Exit Program")           #Program ends
+        print("[2] Add Booking")            #User can add a booking
+        print("[3] Remove Booking")         #User can remove a booking    
+        print("[4] Check Room Bookings")    #User can check room bookings
+        try:
+            userinput = int(input("Please select an option (0-4):")) #User can only input an int number
+            if not 0 <= userinput <= 4: #Only allows it to be in range of 1-4
+                raise ValueError    
+        except ValueError: #If anything else is inputed then 1-4..
+            print("\nInvalid Number\n")                                     #It shall detect it as a invalid number
+        if userinput == 1:                                                  #Option 1 inputs the
+            print("\nThank you for using the meeting room booking system!") 
+            exit()
+        elif userinput == 2:
+            BookRoom()
+        elif userinput == 3:
+            DeleteRoom()
+        elif userinput == 4:
+            GetUserBookedRooms()
+
+
+def BookRoom(): # User must input Name, Room #, Start/End #, Start/End 
+    name = input("Please enter your name:\n")
+
+    room = input("Select a Room [1-4]:\n")
+# This information is compiled into a single list and then written...
+    startdate_entry = input("Input a date when the meeting will start, with the format of [DD/MM/YEAR]:\n")
+    day, month, year = map(int, startdate_entry.split("/"))
+
+    starttime_entry = input("Select a time when the meeting will start, with the format of [HH:MM]:\n")
+    hour, minute = map(int, starttime_entry.split(":"))
+
+    starttime = datetime.datetime(year, month, day, hour, minute)
+
+    enddate_entry = input("Input a date when the meeting will end, with the format of [DD/MM/YEAR]:\n")
+    day, month, year = map(int, enddate_entry.split("/"))
+
+    endtime_entry = input("Select a time when the meeting will end, with the format of [HH:MM]:\n")
+    hour, minute = map(int, endtime_entry.split(":"))
+
+    endtime = datetime.datetime(year, month, day, hour, minute)
+
+    booking = [name, room, starttime, endtime]
+# out to a text file in one line, where the types are split by spaces.
+    with open('MeetingRoom.txt', 'a') as f:
+        for item in booking:
+            f.write("%s," % item)
+    f.close()
+
+    print("{} has book room #{} at {} to {}.\n".format(
+        name, room, starttime, endtime))
+
+def GetUserBookedRooms():
+    userinput = input("Please enter your name:\n")
+    bookroom = GetBookInfo(userinput)
+    print("{} has book room #{} at {} to {}.\n".format(
+        bookroom[0], bookroom[1], bookroom[2], bookroom[3]))
+
+
+def GetBookInfo(username):
+    # This function is meant to retrieve information
+    # from the text file regarding room number and dates
+    # based on the user's name
+    with open('MeetingRoom.txt', 'r') as f:
+        for line in f:
+            if line.startswith(username):
+                bookroom = line.split(",")
+    return bookroom
+
+def DeleteRoom():
+    import os
+    tmp = []
+    f = open("MeetingRoom.txt","r")
+    for line in f:
+        tmp.append(line)
+    f.close()
+    f = open("MeetingRoom.txt", "w")
+
+    Name = input("Enter your Booking name: ")
+    for line in tmp:
+        if not Name in line:
+            f.write(line)
+    f.close()
+    print("Your booking is now removed!")
+MainMenu()
