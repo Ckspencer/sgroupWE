@@ -1,0 +1,144 @@
+import os
+from datetime import date
+from datetime import datetime
+
+#------\------\------\------MainMenu------/------/------/------#
+
+def MainMenu():
+    
+#------\User-Interface/------#
+    
+    print("Welcome to the meeting room booking system!")
+    while True:                             # MainMenu via while loop / User is presented with four options (1-4)
+        print("\n----=-=-=-=-{[Menu]}-=-=-=-=----")
+        print("[1] Exit Program")           # Program ends.
+        print("[2] Add Booking")            # Redirects to add booking function.
+        print("[3] Remove Booking")         # Redirects to remove booking function.
+        print("[4] Check Room Bookings")    # Redirects to check booking function.
+        try:
+            userinput = int(input("Please select an option (0-4): \n")) 
+            if not 1 <= userinput <= 4:     # Only allows it to be in range of 1-4.
+                raise ValueError
+        except ValueError:                  # If anything else is inputed then 1-4,
+            print("\nInvalid Number\n")     # It shall detect it as a invalid number.
+            MainMenu()
+        if userinput == 1:                  # Option 1 - kill's the program
+            print("\nThank you for using the meeting room booking system!")
+            exit()
+        elif userinput == 2:                # Option 2 redirects to the BookRoom Function.
+            BookRoom()
+        elif userinput == 3:                # Option 3 redirects to the DeleteRoom Function.
+            DeleteRoom()
+        elif userinput == 4:                # Option 4 redirects to the GetUserBookedRooms.
+            GetUserBookedRooms()
+            
+#------\------\------\------BookRoom------/------/------/------#
+            
+def BookRoom():
+    print("\n-=--=-{[Add Booking]}-=--=-")                   #Where user input Name, Room #, Start/End #, Start/End                                                 
+    today = date.today()                                     
+    print("Today's date is", today)
+    name = input("Please enter your name:\n")                # Name is taken from userinput
+    if not name.isalpha():
+        print("Invalid Alphabetical character")
+        BookRoom()
+    while True:
+        try:                                # Room is taken from userinput, input needs to be either 1-4
+            room = int(input("Select a Room [1-4]:\n"))
+            if not 1 <= room <= 4:
+                raise ValueError
+        except ValueError:
+            print("\nInvalid Number\n")     # It shall detect it as a invalid number
+            BookRoom()
+        if room == 1:               
+            break
+        elif room == 2:              
+            break
+        elif room == 3:               
+            break
+        elif room == 4:                
+            break
+        
+#------\StartTime/------#
+    while True:
+        startdate_entry = input("Input a date when the meeting will start, with the format of [DD/MM/YY]:\n")
+        day, month, year = map(int, startdate_entry.split("/"))
+        datetime_converted = datetime.strptime(startdate_entry, '%d/%m/%y')
+        if datetime_converted <= datetime.now():
+            print("Can't start from the past")
+        else:
+            pass
+            break
+
+    starttime_entry = input("Select a time when the meeting will start, with the format of [HH:MM]:\n")
+    hour, minute = map(int, starttime_entry.split(":"))
+
+    starttime = datetime(year, month, day, hour, minute)     # This information is compiled into a single list and then written...
+
+#------\EndTime/------#
+
+    enddate_entry = input("Input a date when the meeting will end, with the format of [DD/MM/YY]:\n")
+    day, month, year = map(int, enddate_entry.split("/"))
+    
+    endtime_entry = input("Select a time when the meeting will end, with the format of [HH:MM]:\n")
+    hour, minute = map(int, endtime_entry.split(":"))
+
+    endtime = datetime(year, month, day, hour, minute)
+    
+#------\StartTime + EndTime/------#
+
+    booking = [name, room, starttime, endtime]
+    with open('MeetingRoom.txt', 'a') as f:
+        for item in booking:
+              f.write("%s;" % item)
+        f.write("\n")
+    f.close()
+
+    print("{} has book room #{} at {} to {}.\n".format(
+        name, room, starttime, endtime))
+
+#------\------\------GetBookInfo------/------/------#
+
+def GetBookInfo(userinput):
+    with open('MeetingRoom.txt', 'r') as f:                 # This function retrieve information by reading,
+        for line in f:                                      
+            if line.startswith(userinput):                  # Depending on the users name.
+                bookroom2 = line.split(",")
+    return bookroom2
+
+#------\------\------\------GetUserBookedRooms------/------/------/------#
+
+def GetUserBookedRooms():
+    print("\n-=--=-{[Check Booking]}-=--=-") 
+    userinput = input("Please enter your name:\n")          # Name is taken from input.
+    if not userinput.isalpha():                         
+        print("Invalid Alphabetical character")             # Only allows characters from the alphabet to be in the input.
+        GetUserBookedRooms()    
+    bookroom = GetBookInfo(userinput)                       # Bookroom is related to the GetBookInfo function.
+    print("{} has book room #{} at {} to {}.\n".format(     # Reads back each part from bookroom as a booking.
+        bookroom[0], bookroom[1], bookroom[2], bookroom[3]))
+
+#------\------\------\------DeleteRoom------/------/------/------#
+    
+def DeleteRoom():
+    print("\n-=--=-{[Delete Booking]}-=--=-") 
+    tmp = []
+    f = open("MeetingRoom.txt","r")                         # Reads the file lines; with each word by word,
+    for line in f:                                          # copies all content from that file to wait for it,
+        tmp.append(line)                                    
+    f.close()
+    f = open("MeetingRoom.txt", "w")                        # to be open in written mode so it can replace it except the user names list.
+
+    NameI = input("Enter your Booking name:\n")             # Name is taken from input.
+    if not NameI.isalpha(): 
+        print("Invalid Alphabetical character")             # Only allows characters from the alphabet to be in the input.
+        DeleteRoom()    
+    for line in tmp:
+        if not NameI in line:                               
+            f.write(line)
+    f.close()
+    print("Your booking is now removed!")
+
+
+    
+MainMenu()
