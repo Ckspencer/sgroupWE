@@ -38,23 +38,23 @@ def MainMenu():
 #------\------\------\------BookRoom------/------/------/------#
             
 def BookRoom():
-    print("\n-=--=-{[Add Booking]}-=--=-")  # Where user input Name, Room #, Start/End #, Start/End                                                 
+    print("\n-=--=-{[Add Booking]}-=--=-")  # Where user input Name, Room #, Start/End #, Start/End.                                                 
     today = date.today()                                     
     print("Today's date is", today)
-    name = input("Please enter your name:\n").lower()                # Name is taken from userinput
+    name = input("Please enter your name:\n").lower()                # Name is taken from userinput.
     if not name.isalpha():
         print("Invalid Alphabetical character")
         BookRoom()
     while True:
-        try:                                # Room is taken from userinput, input needs to be either 1-4
+        try:                                # Room is taken from userinput, input needs to be either 1-4.
             room = int(input("Select a Room [1-4]:\n"))
             if not 1 <= room <= 4:
                 raise ValueError
         except ValueError:
-            print("\nInvalid Number\n")     # It shall detect it as a invalid number
+            print("\nInvalid Number\n")     # Any other int input will cause it too return to the bookroom function.
             BookRoom()
         if room == 1:               
-            break
+            break                           
         elif room == 2:              
             break
         elif room == 3:               
@@ -63,6 +63,7 @@ def BookRoom():
             break
         
 #------\StartTime/------#
+        
     while True:
         startdate_entry = input("Input a date when the meeting will start, with the format of [DD/MM/YY]:\n")
         day, month, year = map(int, startdate_entry.split("/")) # Only allows the input too have '/'
@@ -70,7 +71,7 @@ def BookRoom():
         if datetime_converted <= datetime.now():                # so it can be compared with date.now():
             print("Can't start from the past")                  # this means the input has to be after datetime.
         else:
-            pass                                               # passes it to the next input (starttime)
+            pass                                                # passes it to the next input (starttime)
             break
 
     starttime_entry = input("Select a time when the meeting will start, with the format of [HH:MM]:\n")
@@ -82,12 +83,12 @@ def BookRoom():
     
     while True:
         enddate_entry = input("Input a date when the meeting will end, with the format of [DD/MM/YY]:\n")
-        day, month, year = map(int, enddate_entry.split("/"))  # Only allows the input too have '/'
+        day, month, year = map(int, enddate_entry.split("/"))   # Only allows the input too have '/'
         datetime_converted2 = datetime.strptime(enddate_entry, '%d/%m/%y') # Converts the string too an int,
-        if datetime_converted2 <= datetime.now():              # so it can be compared with date.now():
-            print("Can't start from the past")                 # this means the input has to be after datetime.      
+        if datetime_converted2 <= datetime.now():               # so it can be compared with date.now():
+            print("Can't start from the past")                  # this means the input has to be after datetime.      
         else:
-            pass                                               # passes it to the next input (endtime)
+            pass                                                # passes it to the next input (endtime)
             break
     
     endtime_entry = input("Select a time when the meeting will end, with the format of [HH:MM]:\n")
@@ -97,14 +98,14 @@ def BookRoom():
     
 #------\StartTime + EndTime/------#
 
-    booking = [name, room, starttime, endtime]
+    booking = [name, room, starttime, endtime]                  # Combines user name and room with start/time.
     with open('MeetingRoom.txt', 'a') as f:
         for item in booking:
               f.write("%s;" % item)
-        f.write("\n")
+        f.write("\n")                                           # Writes a new line after each booking,
     f.close()
 
-    print("{} has book room #{} at {} to {}.\n".format(
+    print("{} has book room #{} at {} to {}.\n".format(         # Prints out the entire user input booking.
         name, room, starttime, endtime))
 
 #------\------\------GetBookInfo------/------/------#
